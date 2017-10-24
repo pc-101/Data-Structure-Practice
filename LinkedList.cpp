@@ -5,7 +5,7 @@
 	 integer-based linked list
 
 	 @author Peter Chea
-	 @version 1.0
+	 @version 1.1
 ***********************************************/
 
 #include <iostream>
@@ -120,6 +120,8 @@ public:
 			else
 				curr->next->prev = ptr;		// Only set the next pointer's prev pointer if next ptr isn't nullptr
 			curr->next = ptr;
+
+			size++; 
 		}
 		else
 			std::cerr << "Failed to insert_after! Reason: "
@@ -155,6 +157,8 @@ public:
 			else
 				curr->prev->next = ptr;		// Only set the next pointer's prev pointer if next ptr isn't nullptr
 			curr->prev = ptr;
+
+			size++;
 		}
 		else
 			std::cerr << "Failed to insert_before! Reason: " 
@@ -216,12 +220,22 @@ public:
 				temp->prev->next = curr; 
 				delete temp; 
 			}
+
+			size--;
 		}
 		else
 			std::cerr << "Unable to delete_node with value: " << val
 			<< ". Reason: value not found!" << std::endl; 
 	}
 
+	/**
+		Prints out the size of the linked list
+
+		@return size	Size of the linked list
+	*/
+	const int getSize() const {
+		return size; 
+	}
 
 	/** 
 		Prints out the values and addresses of the head and tail pointers, essentially representing 
@@ -230,6 +244,7 @@ public:
 	void print_info () {
 		std::cout << "Head value: " << head->value << ", Tail value: " << tail->value << "\n"; 
 		std::cout << "Head address: " << head << " and Tail address: " << tail << "\n"; 
+		std::cout << "Size of the list is: " << getSize() << "\n"; 
 	}
 
 	/**
@@ -241,6 +256,7 @@ public:
 		for (curr = head; curr != nullptr; curr = curr->next)
 			printf("%d ", curr->value);
 		printf("\n"); 
+		printf("\n");
 	}
 private:
 	Node *head, *tail;
@@ -289,6 +305,11 @@ int main() {
 	// Use n8 to test insert_before method
 	l.insert_before(n7->value, n8); 
 
+	// Use this to compare the list before deletion (another print statement at end allows comparison)
+	std::cout << "Before deleting a node in our list: \n"; 
+	l.print_info();
+	std::cout << "\n"; 
+
 	// Can test delete_node on any desired node
 	l.delete_node(-100); 
 
@@ -303,15 +324,16 @@ int main() {
 	std::cout << "Address of n8: " << n8 << std::endl;
 
 	// Tries to find the desired value
-	std::cout << l.find(0) << std::endl; 
-	std::cout << l.find(1) << std::endl;
-	std::cout << l.find(2) << std::endl;
-	std::cout << l.find(3) << std::endl;
-	std::cout << l.find(-0) << std::endl;
-	std::cout << l.find(-1) << std::endl;
-	std::cout << l.find(-2) << std::endl;
-	std::cout << l.find(27) << std::endl;
-	std::cout << l.find(-100) << std::endl;
+	std::cout << "\nPrints 1 if found, 0 if not found:\n"; 
+	std::cout << "Finding 1: " << l.find(1) << std::endl;
+	std::cout << "Finding 2: " << l.find(2) << std::endl;
+	std::cout << "Finding 3: " << l.find(3) << std::endl;
+	std::cout << "Finding 0: " << l.find(0) << std::endl;
+	std::cout << "Finding -1: " << l.find(-1) << std::endl;
+	std::cout << "Finding -2: " << l.find(-2) << std::endl;
+	std::cout << "Finding 27: " << l.find(27) << std::endl;
+	std::cout << "Finding -100: " << l.find(-100) << std::endl;
+	std::cout << "\n"; 
 
 	l.print_info(); 
 	l.print_nodes(); 
